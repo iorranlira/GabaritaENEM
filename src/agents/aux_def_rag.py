@@ -1,7 +1,8 @@
 import re
 import os
 from langchain_core.documents import Document
-
+from langchain_core.prompts import ChatPromptTemplate
+#from rag_agent import llm
 
 def retrieve_by_id(db, numero, ano):
 
@@ -24,10 +25,12 @@ def retrieve_by_id(db, numero, ano):
     return None
 
 def parse_questao_enem(texto):
-    padrao1 = r"quest[aã]o\s*(\d+).*?enem\s*(\d{4})"
-    padrao2 = r"enem\s*(\d{4}).*?quest[aã]o\s*(\d+)"
+    #padrao1 = r"quest[aã]o\s*(\d+).*?enem\s*(\d{4})"
+    #padrao2 = r"enem\s*(\d{4}).*?quest[aã]o\s*(\d+)"
 
-
+    padrao1 = r"quest[aã]o\s*(\d+).*?enem\s*(?:de\s*)?(\d{4})"
+    padrao2 = r"enem\s*(?:de\s*)?(\d{4}).*?quest[aã]o\s*(\d+)"
+    
     match = re.search(padrao1, texto.lower())
 
     if match:
