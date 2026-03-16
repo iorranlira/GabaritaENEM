@@ -77,17 +77,27 @@ def extrair_enunciado(texto):
     return texto.strip()
 
 
-def get_area(numero_questao):
-    if 1 <= numero_questao <= 45:
-        return "Linguagens, Códigos e suas Tecnologias"
-    elif 46 <= numero_questao <= 90:
-        return "Ciências Humanas e suas Tecnologias"
-    elif 91 <= numero_questao <= 135:
-        return "Ciências da Natureza e suas Tecnologias"
-    elif 136 <= numero_questao <= 180:
-        return "Matemática e suas Tecnologias"
+def get_area(numero_questao, ano):
+    if ano <= 2016:
+        if 1 <= numero_questao <= 45:
+            return "Ciências Humanas e suas Tecnologias"
+        elif 46 <= numero_questao <= 90:
+            return "Ciências da Natureza e suas Tecnologias"
+        elif 91 <= numero_questao <= 135:
+            return "Linguagens, Códigos e suas Tecnologias"
+        elif 136 <= numero_questao <= 180:
+            return "Matemática e suas Tecnologias"
     else:
-        return "Desconhecida"
+        if 1 <= numero_questao <= 45:
+            return "Linguagens, Códigos e suas Tecnologias"
+        elif 46 <= numero_questao <= 90:
+            return "Ciências Humanas e suas Tecnologias"
+        elif 91 <= numero_questao <= 135:
+            return "Ciências da Natureza e suas Tecnologias"
+        elif 136 <= numero_questao <= 180:
+            return "Matemática e suas Tecnologias"
+
+    return "Desconhecida"
 
 
 def extrair_gabarito(caminho):
@@ -188,6 +198,8 @@ def limpar_texto_bruto(texto):
 
     texto = re.sub(r'([A-Z])\1+', r'\1', texto)
 
+    
+
     return texto.strip()
 
 
@@ -227,7 +239,7 @@ def montar_dataset(ano, questoes, gabarito):
 
         item = ({
             "ano": ano,
-            "area": get_area(numero),
+            "area": get_area(numero, ano),
             "numero_questao": numero,
             "enunciado": enunciado,
             "alternativas": alternativas,

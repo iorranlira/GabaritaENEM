@@ -1,7 +1,8 @@
 from typing import TypedDict, List
+from unittest import result
 from langgraph.graph import StateGraph, END
-#from aux_def_rag import verificar_relevancia[
 from rag_agent import verificar_relevancia  
+from automation_agent import automation_node
 
 from rag_agent import (
     supervisor_agent,
@@ -21,36 +22,38 @@ class AgentState(TypedDict):
     retry_count: int
     approved: bool  
     refuse: bool 
+    simulado: bool
 
 def supervisor_node(state: AgentState):
 
     question = state["question"]
 
-    #supervisor_agent(question)
     result = supervisor_agent(question)
 
+    if "SIMULADO" in result:
+        return {**state, "approved": False, "refuse": False, "simulado": True}
+    
     if "INVALIDA" in result:
-        return {**state, "approved": False, "refuse": True}
+        return {**state, "approved": False, "refuse": True, "simulado": False}    
+    
+    return {**state, "approved": True, "refuse": False, "simulado": False}
 
-    #return state
-    return {**state, "approved": True, "refuse": False}
-
-def question_retriever_node(state: AgentState):
+async def question_retriever_node(state: AgentState):
 
     question = state["question"]
 
-    doc = question_retriever_agent(question)
+    doc = await question_retriever_agent(question)
 
     return {
         "question_doc": doc
     }
 
 
-def similar_retriever_node(state: AgentState):
+async def similar_retriever_node(state: AgentState):
 
     question = state["question"]
 
-    docs = similar_questions_agent(question)
+    docs = await similar_questions_agent(question)
 
     return {
         "similar_docs": docs
@@ -113,7 +116,7 @@ def safety_route(state):
     return "recuperador"
 
 def recusar_node(state):
-    return {**state, "answer": "Não foi possível encontrar evidências suficientes para responder com segurança. Tente reformular sua pergunta."}
+    return {**state, "answer": "\n \n Não foi possível encontrar evidências suficientes para responder com segurança. Tente reformular sua pergunta."}
 
 
 def resposta_final_node(state):
@@ -123,7 +126,9 @@ def supervisor_router(state):
 
     if state.get("refuse"):
         return "recusar"
-
+    if state.get("simulado"): 
+        return "automation"
+    
     return "question_retriever"
 
 
@@ -138,15 +143,15 @@ def build_graph():
     graph.add_node("safety", safety_node)
     graph.add_node("resposta_final",      resposta_final_node)
     graph.add_node("recusar",             recusar_node)
-
+    graph.add_node("automation", automation_node)
+    
     graph.set_entry_point("supervisor")
 
-    
-    #graph.add_edge("supervisor", "question_retriever")
     graph.add_conditional_edges("supervisor", supervisor_router,
         {
             "question_retriever": "question_retriever",
-            "recusar": "recusar"
+            "recusar": "recusar",
+            "automation": "automation"
         }
     )
 
@@ -160,6 +165,7 @@ def build_graph():
         "recuperador":    "question_retriever",  
     })
 
+    graph.add_edge("automation", "resposta_final")
     graph.add_edge("resposta_final", END)
     graph.add_edge("recusar",        END)
 

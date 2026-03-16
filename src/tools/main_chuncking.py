@@ -67,7 +67,7 @@ def processar_todas_provas():
 
 def main():
 
-    #ano = 2022
+    ano = 2011
 
     #dataset = processar_prova(ano)
 
@@ -76,7 +76,8 @@ def main():
     #print(json.dumps(dataset[0], indent=2, ensure_ascii=False))
 
     #print("\nTotal de questões:", len(dataset))
-    processar_todas_provas()
+    
+    #processar_todas_provas()
 
 if __name__ == "__main__":
     main()
