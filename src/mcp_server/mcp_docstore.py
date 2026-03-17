@@ -1,18 +1,19 @@
 from mcp.server.fastmcp import FastMCP
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
 import os
-
+import sys
+import logging
+from dotenv import load_dotenv
+load_dotenv()
+logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
+logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, BASE_DIR)
+from agents.embeddings import embeddings
 vector_path = os.path.join(BASE_DIR, "vectors")
 
 mcp = FastMCP("enem-docstore")
-
-embeddings = HuggingFaceEmbeddings(
-    model_name="BAAI/bge-m3",
-    encode_kwargs={"normalize_embeddings": True}
-)
 
 db = Chroma(
     persist_directory=vector_path,
