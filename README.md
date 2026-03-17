@@ -106,7 +106,7 @@ GabaritaENEM/
 
 ### Pré-requisitos
 
-- Python >= 3.10 <= 3.15
+- Python >= 3.11 e <= 3.14
 - `uv` (gerenciador de pacotes)
 
 ### Passos
