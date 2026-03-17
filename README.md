@@ -121,10 +121,13 @@ cd GabaritaENEM
 # 3. Instale o uv
 pip install uv
 
-# 4. inicie o uv
+# 4 Criar o ambiente virtual
+uv venv
+
+# 5. inicie o uv
 source .venv/bin/activate
 
-# 5. Instale as dependências
+# 6. Instale as dependências
 uv pip install -e .
 ```
 
@@ -147,7 +150,7 @@ HF_TOKEN=seu_token_hf
 
 ```bash
 # No diretorio raiz, execute:
-uv run python -m src.main_agent
+uv run python -m src.main
 ```
 
 ```
