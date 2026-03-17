@@ -111,24 +111,24 @@ GabaritaENEM/
 
 ### Passos
 
-```bash
 # 1. Clone o repositório
 git clone https://github.com/iorranlira/GabaritaENEM
-
-# 2. Navegue até o repositório raiz
 cd GabaritaENEM
 
-# 3. Instale o uv
-pip install uv
+# 2. Instale suporte a venv, caso já não tenha
+sudo apt update
+sudo apt install python3-venv python3-pip -y 
 
-# 4 Criar o ambiente virtual
-uv venv
-
-# 5. inicie o uv
+# 3. Crie e ative o ambiente virtual
+python3 -m venv .venv
 source .venv/bin/activate
 
-# 6. Instale as dependências
+# 4. Instale uv e dependências
+pip install uv
 uv pip install -e .
+
+# 5. Rode o projeto
+uv run python -m src.main
 ```
 
 ---
