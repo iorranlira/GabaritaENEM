@@ -1,10 +1,10 @@
 from typing import TypedDict, List
 from unittest import result
 from langgraph.graph import StateGraph, END
-from rag_agent import verificar_relevancia  
-from automation_agent import automation_node
+from src.agents.rag_agent import verificar_relevancia  
+from src.agents.automation_agent import automation_node
 
-from rag_agent import (
+from src.agents.rag_agent import (
     supervisor_agent,
     question_retriever_agent,
     similar_questions_agent,

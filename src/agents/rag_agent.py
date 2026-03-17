@@ -1,14 +1,12 @@
 import json
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
-from retriever import (retrieve_docs, db)
-from aux_def_rag import (parse_questao_enem, retrieve_by_id)
+from src.agents.retriever import (retrieve_docs)
+from src.agents.aux_def_rag import (parse_questao_enem)
 from langchain_mcp_adapters.client import MultiServerMCPClient
 import re
 from langchain_core.documents import Document
 import asyncio
-
-
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -24,7 +22,7 @@ client = MultiServerMCPClient(
         "docstore": {
             "transport": "stdio",
             "command": "python",
-            "args": ["src/mcp/mcp_docstore.py"]
+            "args": ["src/mcp_server/mcp_docstore.py"]
         }
     }
 )
@@ -84,7 +82,7 @@ async def question_retriever_agent(question):
             "numero": numero
         })
 
-        print("[AGENT] resposta MCP:", doc_data)
+        #print("[AGENT] resposta MCP:", doc_data)
 
         if isinstance(doc_data, list) and doc_data:
             dado = json.loads(doc_data[0]["text"])

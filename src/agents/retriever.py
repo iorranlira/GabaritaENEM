@@ -1,9 +1,6 @@
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
-
-embeddings = HuggingFaceEmbeddings(
-    model_name="BAAI/bge-m3"
-)
+#from langchain_community.embeddings import HuggingFaceEmbeddings
+from src.agents.embeddings import embeddings
 
 db = Chroma(
     persist_directory="src/vectors",

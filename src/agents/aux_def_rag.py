@@ -1,7 +1,6 @@
 import re
 import os
 from langchain_core.documents import Document
-from langchain_core.prompts import ChatPromptTemplate
 
 
 def retrieve_by_id(db, numero, ano):

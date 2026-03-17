@@ -2,15 +2,13 @@ from logging import config
 import random
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from pathlib import Path
 import json
-from rag_agent import llm
+from src.agents.rag_agent import llm
+from src.agents.embeddings import embeddings
 
 ROOT_DIR   = Path(__file__).resolve().parents[2]
 VECTOR_DIR = str(ROOT_DIR / "src/vectors")
-
-embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
 
 db = Chroma(
     persist_directory=VECTOR_DIR,
@@ -112,28 +110,18 @@ def automation_node(state):
             "refuse":   True,
         }
 
-    #areas  = config.get("areas", list(AREAS_VALIDAS.keys()))
-    #n      = config.get("questoes_por_area", 3)
-
     areas = config.get("areas")
 
-    # verifica se o usuário realmente citou alguma área
     usuario_citou_area = any(a in question.lower() for a in AREAS_VALIDAS)
 
     if not usuario_citou_area:
         areas = list(AREAS_VALIDAS.keys())
-
-    # garante que só áreas válidas sejam usadas
     areas = [a for a in areas if a in AREAS_VALIDAS]
 
     if not areas:
         areas = list(AREAS_VALIDAS.keys())
 
     n = config.get("questoes_por_area", 3)
-
-
-
-
 
 
     print(f"[AUTOMATION] áreas: {areas} | {n} questões por área")
