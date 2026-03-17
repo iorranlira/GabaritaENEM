@@ -233,7 +233,7 @@ Em caso de reprovação:
 
 ### Automação — Gerar simulados - Tarefas
  
-Definição das 5 tarefas de automação avaliadas, com inputs, output esperado e métricas coletadas.
+Definição das 5 tarefas de automação avaliadas, com inputs e output esperados.
  
 | # | Tarefa | Input | Output esperado | 
 |---|---|---|---|
