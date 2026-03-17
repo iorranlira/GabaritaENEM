@@ -110,7 +110,7 @@ GabaritaENEM/
 - `uv` (gerenciador de pacotes)
 
 ### Passos
-
+```bash
 # 1. Clone o repositório
 git clone https://github.com/iorranlira/GabaritaENEM
 cd GabaritaENEM
